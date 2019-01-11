@@ -1,6 +1,9 @@
 import os
 from .hashfuncs import md5_hash
 
+def valid_root(file_path):
+    return os.path.isdir(file_path)
+
 def get_stats(file_path):
     result = {}
     result['exists'] = os.path.exists(file_path)
@@ -15,7 +18,14 @@ def get_stats(file_path):
         pass
     
     return result
-        
+
+def total_size(path_set, select_paths=None):
+    total = 0
+    if not select_paths:
+        select_paths = path_set.keys()
+    for path in select_paths:
+        total += path_set[path].get('st_size', 0)
+    return total
 
 def build_sets(root_folder):
     directory_set = {}
@@ -66,7 +76,4 @@ def hash_paths(file_map, select_paths=None, hash_type='md5', callback=None):
                 'Get_hashes given path not in main file_dict: {}'.format(path)
             )
         if file_map[path]['exists']:
-            file_map[path][hash_type] = func_map[hash_type](path)
-
-        if callback:
-            callback(1)
+            file_map[path][hash_type] = func_map[hash_type](path, callback=callback)
