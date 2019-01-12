@@ -1,8 +1,5 @@
-print(__name__)
-
-
-from .helpers.progress import WalkProgress, HashProgress
-from .helpers.helpers import (build_sets,  hash_paths, build_size_index,
+from datasnap.datasnap.helpers.progress import WalkProgress, HashProgress
+from datasnap.datasnap.helpers.helpers import (build_sets,  hash_paths, build_size_index,
                      select_duplicate_sizes, total_size, valid_root)
 
 

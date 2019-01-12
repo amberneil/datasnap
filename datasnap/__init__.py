@@ -1,1 +1,1 @@
-from .main import datasnap
+from .datasnap import datasnap
