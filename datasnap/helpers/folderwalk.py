@@ -11,15 +11,19 @@ def list_child_dirs(path):
     return result
 
 def folderwalk(root, timeout=None):
-    upper_level_dirs = list_child_dirs(root)
-    key_dirs = set(i for i in upper_level_dirs)
-    if timeout:
+    key_dirs = set()
+    assert os.path.exists(root)
+    if timeout is not None:
         condition = lambda now, timeout: now < timeout
     else:
         condition = lambda x, y: True
 
     start = time.time()
     while condition(time.time() - start, timeout):
+        if len(key_dirs) == 0:
+            upper_level_dirs = list_child_dirs(root)
+            key_dirs = set(list_child_dirs(root))
+
         this_level_dirs = set()
         for dr in upper_level_dirs:
             child_dirs = list_child_dirs(dr)

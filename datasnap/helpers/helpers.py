@@ -27,16 +27,20 @@ def total_size(path_set, select_paths=None):
         total += path_set[path].get('st_size', 0)
     return total
 
-def build_sets(root_folder):
+def build_sets(root_folder, callback=None):
     directory_set = {}
     file_set = {}
     for path, dirs, files in os.walk(root_folder):
         for dr in dirs:
             directory_path = os.path.join(path, dr)
             directory_set[directory_path] = get_stats(directory_path)
+            if callback:
+                callback(directory_path)
+                
         for fi in files:
             file_path = os.path.join(path, fi)
             file_set[file_path] = get_stats(file_path)
+            
     return (directory_set, file_set)
 
 def build_size_index(file_map):
