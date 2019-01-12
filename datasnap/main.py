@@ -1,5 +1,11 @@
-from .helpers.progress import WalkProgress, HashProgress
-from .helpers.helpers import (build_sets,  hash_paths, build_size_index,
+import os
+print(os.path.relpath('/Users/amberserver/Documents/GitHub/datasnap/datasnap/helpers'))
+
+
+
+
+from datasnap.helpers.progress import WalkProgress, HashProgress
+from datasnap.helpers.helpers import (build_sets,  hash_paths, build_size_index,
                      select_duplicate_sizes, total_size, valid_root)
 
 
