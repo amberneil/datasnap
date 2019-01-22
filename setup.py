@@ -8,4 +8,7 @@ setup(
         package_dir={'datasnap': 'datasnap'},
         author_email='neil@amber.film',
         packages=['datasnap'],
+        install_requires=[
+          'tqdm',
+        ],
     )
