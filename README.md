@@ -42,7 +42,7 @@ Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks,
         'st_uid': 501
     },
     '/Users/amberneil/Desktop/B001/DCIM': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D': { ... }
 }
 
 >>> files
