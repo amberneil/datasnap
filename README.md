@@ -15,9 +15,9 @@ Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks,
 
 >>> dirs
 {
-    '/Users/amberserver/Desktop/B001/MISC': {
+    '/Users/amberneil/Desktop/B001/MISC': {
         'exists': True,
-        'realpath': '/Users/amberserver/Desktop/B001/MISC',
+        'realpath': '/Users/amberneil/Desktop/B001/MISC',
         'n_fields': 22,
         'n_sequence_fields': 10,
         'n_unnamed_fields': 3,
@@ -41,15 +41,15 @@ Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks,
         'st_size': 64,
         'st_uid': 501
     },
-    '/Users/amberserver/Desktop/B001/DCIM': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D': { ... },
 }
 
 >>> files
 {
-    '/Users/amberserver/Desktop/B001/.DS_Store': {
+    '/Users/amberneil/Desktop/B001/.DS_Store': {
         'exists': True,
-        'realpath': '/Users/amberserver/Desktop/B001/.DS_Store',
+        'realpath': '/Users/amberneil/Desktop/B001/.DS_Store',
         'n_fields': 22,
         'n_sequence_fields': 10,
         'n_unnamed_fields': 3,
@@ -73,17 +73,17 @@ Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks,
         'st_size': 6148,
         'st_uid': 50
     }
-    '/Users/amberserver/Desktop/B001/DCIM/.DS_Store': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/MVI_1083.MOV': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/MVI_1084.MOV': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/MVI_1086.MOV': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/_MG_1079.JPG': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/_MG_1078.JPG': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/MVI_1077.THM': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/_MG_1078.CR2': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/_MG_1079.CR2': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/MVI_1083.THM': { ... },
-    '/Users/amberserver/Desktop/B001/DCIM/100EOS7D/MVI_1082.THM': { ... }   
+    '/Users/amberneil/Desktop/B001/DCIM/.DS_Store': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1083.MOV': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1084.MOV': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1086.MOV': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1079.JPG': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1078.JPG': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1077.THM': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1078.CR2': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1079.CR2': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1083.THM': { ... },
+    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1082.THM': { ... }   
 
 }
 
