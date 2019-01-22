@@ -1,5 +1,6 @@
 import os
 from .hashfuncs import md5_hash
+import errno
 
 def valid_root(file_path):
     return os.path.isdir(file_path)
@@ -14,8 +15,9 @@ def get_stats(file_path):
             att_value = getattr(stat_result, att)
             if not callable(att_value) and att != '__doc__':
                 result[att] = att_value
-    except FileNotFoundError:
-        pass
+    except EnvironmentError as e:
+        if os.strerror(e.errno) == 'No such file or directory':
+            pass
     
     return result
 
