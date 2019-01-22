@@ -18,6 +18,7 @@ Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks,
     '/Users/amberneil/Desktop/B001/MISC': {
         'exists': True,
         'realpath': '/Users/amberneil/Desktop/B001/MISC',
+        'parent': '/Users/amberneil/Desktop/B001',
         'n_fields': 22,
         'n_sequence_fields': 10,
         'n_unnamed_fields': 3,
