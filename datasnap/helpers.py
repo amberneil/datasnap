@@ -9,6 +9,7 @@ def get_stats(file_path):
     result = {}
     result['exists'] = os.path.exists(file_path)
     result['realpath'] = os.path.realpath(file_path)
+    result['parent'] = os.path.abspath(os.path.join(file_path, os.pardir))
     try:
         stat_result = os.stat(file_path)
         for att in dir(stat_result):
