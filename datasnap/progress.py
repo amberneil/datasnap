@@ -3,10 +3,10 @@ from .folderwalk import folderwalk
 from .helpers import total_size, build_size_index, select_duplicate_sizes
 
 class WalkProgress():
-    def __init__(self, root_folder, callback=None, show=False):
-        self.timeout = 5
+    def __init__(self, root_folder, timeout=5, callback=None, show=False):
+        self.timeout = timeout
         self.callback = callback
-        self.folders = folderwalk(root_folder, 5)
+        self.folders = folderwalk(root_folder, self.timeout)
         self.total = len(self.folders)
         self.pbar = tqdm(total=self.total, disable=(not show))
     

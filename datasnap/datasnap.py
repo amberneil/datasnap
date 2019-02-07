@@ -9,9 +9,9 @@ def datasnap(root_folder, get_hashes=False, all_hashes=True, hash_type='md5', pr
         raise ValueError('Not a valid folder: {}'.format(root_folder))
     
     if not progresshandler:
-      progresshandler = WalkProgress
+      progresshandler = WalkProgress(root_folder, show=progressbar)
       
-    with progresshandler(root_folder, show=progressbar) as pbar:
+    with progresshandler as pbar:
         dir_map, file_map = build_sets(root_folder, callback=pbar.update)
 
     if get_hashes:

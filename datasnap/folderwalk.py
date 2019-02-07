@@ -33,4 +33,5 @@ def folderwalk(root, timeout=None):
 
         if not this_level_dirs:
             break
+    
     return key_dirs
