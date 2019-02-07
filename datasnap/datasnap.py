@@ -8,7 +8,7 @@ def datasnap(root_folder, get_hashes=False, all_hashes=True, hash_type='md5', pr
     if not valid_root(root_folder):
         raise ValueError('Not a valid folder: {}'.format(root_folder))
     
-    with WalkProgress(root_folder, show=(not progressbar)) as pbar:
+    with WalkProgress(root_folder, show=progressbar) as pbar:
         dir_map, file_map = build_sets(root_folder, callback=pbar.update)
 
     if get_hashes:
