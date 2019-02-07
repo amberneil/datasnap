@@ -3,10 +3,11 @@ from .folderwalk import folderwalk
 from .helpers import total_size, build_size_index, select_duplicate_sizes
 
 class WalkProgress():
-    def __init__(self, root_folder, disable=False):
+    def __init__(self, root_folder, show=False):
         self.timeout = 5
         self.folders = folderwalk(root_folder, 5)
-        self.pbar = tqdm(total=len(self.folders), disable=disable)
+        self.total = len(self.folders)
+        self.pbar = tqdm(total=self.total, disable=show)
     
     def update(self, processed_dir):
         if processed_dir in self.folders:
