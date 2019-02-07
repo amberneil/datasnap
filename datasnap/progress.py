@@ -7,7 +7,7 @@ class WalkProgress():
         self.timeout = 5
         self.folders = folderwalk(root_folder, 5)
         self.total = len(self.folders)
-        self.pbar = tqdm(total=self.total, disable=show)
+        self.pbar = tqdm(total=self.total, disable=(not show))
     
     def update(self, processed_dir):
         if processed_dir in self.folders:
