@@ -3,12 +3,15 @@ from .helpers import (build_sets,  hash_paths, build_size_index,
                      select_duplicate_sizes, total_size, valid_root)
 
 
-def datasnap(root_folder, get_hashes=False, all_hashes=True, hash_type='md5', progressbar=False):
+def datasnap(root_folder, get_hashes=False, all_hashes=True, hash_type='md5', progresshandler=None, progressbar=False):
     
     if not valid_root(root_folder):
         raise ValueError('Not a valid folder: {}'.format(root_folder))
     
-    with WalkProgress(root_folder, show=progressbar) as pbar:
+    if not progresshandler:
+      progresshandler = WalkProgress
+      
+    with progresshandler(root_folder, show=progressbar) as pbar:
         dir_map, file_map = build_sets(root_folder, callback=pbar.update)
 
     if get_hashes:
