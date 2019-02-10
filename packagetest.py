@@ -32,6 +32,7 @@ class HashHandler(logging.Handler):
                 new_bytes = (yield)
                 processed += new_bytes
                 pbar.update(new_bytes)
+        yield
 
     def emit(self, record):
         if record.getMessage() == 'Hash total':

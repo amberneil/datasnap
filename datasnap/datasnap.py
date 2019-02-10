@@ -1,10 +1,10 @@
 import logging
 
 from .folderwalk import folderwalk
-from .helpers import (build_sets,  hash_paths, build_size_index,
-                     select_duplicate_sizes, total_size, valid_root)
+from .helpers import (build_sets, hash_paths, valid_root)
 
 logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 def _walk_progress_generator(folder_scan):
     total = len(folder_scan)
@@ -29,18 +29,21 @@ def datasnap(root_folder, get_hashes=False, scan_timeout=5):
         logger.error("Invalid folder passed as root.", extra={'folder': root_folder})
         raise ValueError('Not a valid folder: {}'.format(root_folder))
         
-    
+    # Logic to get a rough total of folders and send to logs
     logger.info('Starting folder scan')
     folder_scan = folderwalk(root_folder, scan_timeout)
     prog_gen = _walk_progress_generator(folder_scan)
     prog_gen.send(None)
+    # Actual walk function.
     dir_map, file_map = build_sets(root_folder, callback=lambda x: prog_gen.send(x))
     
 
     if get_hashes:
+        # Logic to log hash progress
         logger.info("Starting hash process")
         prog_gen = _hash_progress_generator(file_map)
         prog_gen.send(None)
+        # Actual hash function
         hash_paths(file_map, callback=lambda x: prog_gen.send(x))
 
     return (dir_map, file_map)
