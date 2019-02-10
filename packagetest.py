@@ -1,9 +1,9 @@
 from datasnap import datasnap
-from datasnap.progress import WalkProgress
 import time
 from tqdm import tqdm
 import logging
 root = "/Volumes/AMBER_186F4"
+root = "/Users/amberserver/Downloads"
 
 
 class TqdmHandler(logging.Handler):
@@ -21,12 +21,31 @@ class TqdmHandler(logging.Handler):
             self.pbar.send(None)
         if record.getMessage() == 'Shallow progress':
             self.pbar.send(record.update)
+
+class HashHandler(logging.Handler):
+    pbar = None
+
+    def progress(self, total):
+        processed = 0
+        with tqdm(total=total, bar_format=None) as pbar:
+            while processed < total:
+                new_bytes = (yield)
+                processed += new_bytes
+                pbar.update(new_bytes)
+
+    def emit(self, record):
+        if record.getMessage() == 'Hash total':
+            print("Starting Hashes...")
+            self.pbar = self.progress(record.total)
+            self.pbar.send(None)
+        if record.getMessage() == 'Hash progress':
+            self.pbar.send(record.update)
             
 
 logging.basicConfig(
     level=logging.INFO,
-    handlers=[TqdmHandler()]
+    handlers=[TqdmHandler(), HashHandler()]
 )
 
 
-files, dirs = datasnap(root)
+files, dirs = datasnap(root, get_hashes=True)

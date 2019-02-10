@@ -1,35 +1,46 @@
 import logging
-from .progress import WalkProgress, HashProgress
+
+from .folderwalk import folderwalk
 from .helpers import (build_sets,  hash_paths, build_size_index,
                      select_duplicate_sizes, total_size, valid_root)
 
 logger = logging.getLogger(__name__)
 
-def datasnap(root_folder, get_hashes=False, all_hashes=True, hash_type='md5', progresshandler=None, progressbar=False):
+def _walk_progress_generator(folder_scan):
+    total = len(folder_scan)
+    logger.info('Shallow total', extra={'total': total})
+    while True:
+        path = (yield)
+        if path in folder_scan:
+            logger.info('Shallow progress', extra={'update': 1, 'total': total})
+
+def _hash_progress_generator(file_map):
+    total = sum(file_map[path].get('st_size', 0) for path in file_map.keys())
+    logger.info('Hash total', extra={'total': total})
+    while True:
+        processed_bytes = (yield)
+        logger.info('Hash progress', extra={'update': processed_bytes, 'total': total})
+
+
+
+def datasnap(root_folder, get_hashes=False, scan_timeout=5):
     
     if not valid_root(root_folder):
-        raise ValueError('Not a valid folder: {}'.format(root_folder))
         logger.error("Invalid folder passed as root.", extra={'folder': root_folder})
+        raise ValueError('Not a valid folder: {}'.format(root_folder))
+        
     
-    if not progresshandler:
-        progresshandler = WalkProgress(root_folder, show=progressbar)
-        logger.info("Using default progress handler", extra={'handler': repr(progresshandler)})
-    else:
-        logger.info("Using passed parameter as progress handler", extra={'handler': repr(progresshandler)})
+    logger.info('Starting folder scan')
+    folder_scan = folderwalk(root_folder, scan_timeout)
+    prog_gen = _walk_progress_generator(folder_scan)
+    prog_gen.send(None)
+    dir_map, file_map = build_sets(root_folder, callback=lambda x: prog_gen.send(x))
     
-      
-    with progresshandler as pbar:
-        dir_map, file_map = build_sets(root_folder, callback=pbar.update)
 
     if get_hashes:
-        logger.info("Starting hash process", extra={'all_hashes': all_hashes}) 
-        with HashProgress(
-            file_map, all_hashes=all_hashes, disable=(not progressbar)
-            ) as pbar:
-
-            hash_paths(
-                file_map, select_paths=pbar.select_hash_set,
-                hash_type=hash_type, callback=pbar.update
-            )
+        logger.info("Starting hash process")
+        prog_gen = _hash_progress_generator(file_map)
+        prog_gen.send(None)
+        hash_paths(file_map, callback=lambda x: prog_gen.send(x))
 
     return (dir_map, file_map)
