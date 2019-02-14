@@ -1,6 +1,4 @@
 import os
-from .hashfuncs import md5_hash
-import errno
 
 def get_stats(file_path):
     result = {}

@@ -1,12 +1,17 @@
 import logging
 import os
 from .folderwalk import folderwalk
-from .hashfuncs import md5_hash
 from .helpers import get_stats
 from .progress import _walk_progress_generator, _hash_progress_generator
+from .hash import md5
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
+
+def _sort_by_level(buffer_item):
+    name, stats, isdir = buffer_item
+    path_parts = stats['parent'].split(os.sep)
+    return (not isdir, len(path_parts))
 
 def datasnap(root_folder, hash=False, scan_timeout=5):
     
@@ -19,19 +24,20 @@ def datasnap(root_folder, hash=False, scan_timeout=5):
     
     buffer = []
     for path, dirs, files in os.walk(root_folder):
-        for dr in dirs:
-            directory_path = os.path.join(path, dr)
-            walk_callback(directory_path)
-            buffer.append((directory_path, get_stats(directory_path), True))
+        for directory_name in dirs:
+            full_path = os.path.join(path, directory_name)
+            walk_callback(full_path)
+            buffer.append((directory_name, get_stats(full_path), True))
                 
-        for fi in files:
-            file_path = os.path.join(path, fi)
-            buffer.append((file_path, get_stats(file_path), False))
+        for file_name in files:
+            full_path = os.path.join(path, file_name)
+            buffer.append((full_path, get_stats(full_path), False))
 
     if hash:
         hash_callback = _hash_progress_generator(buffer)
-    for path, stats, isdir in buffer:
+    for name, stats, isdir in sorted(buffer, key=_sort_by_level):
         if hash:
             if not isdir:
-                stats['md5'] = md5_hash(path, callback=hash_callback)
-        yield (path, stats, isdir)
+                full_path = os.path.join(stats['parent'], name)
+                stats['md5'] = md5(full_path, callback=hash_callback)
+        yield (name, stats, isdir)

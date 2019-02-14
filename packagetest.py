@@ -1,4 +1,6 @@
 from datasnap import datasnap
+import os
+import shelve
 from pprint import pprint
 import time
 from tqdm import tqdm
@@ -44,3 +46,13 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.addHandler(WalkLog())
 logger.addHandler(HashLog())
+
+
+# with shelve.open('packagecache') as db:
+#     db['data'] = [i for i in datasnap(root, hash=False)]
+count = 0
+for name, stats, isdir in datasnap(root, hash=False):
+    count += 1
+    if count > 100:
+        break
+    print(os.path.join(stats['parent'], name), isdir)

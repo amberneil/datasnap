@@ -21,7 +21,7 @@ def _walk_progress_generator(folder_scan):
 @_gen_wrap
 def _hash_progress_generator(buffer):
     total = 0
-    for path, stats, isdir in buffer: 
+    for name, stats, isdir in buffer: 
         if not isdir:
             total += stats.get('st_size', 0)
     logger.info('Hash total', extra={'total': total})

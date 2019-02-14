@@ -111,3 +111,4 @@ venv.bak/
 
 # Neil things:
 packagetest.py
+packagecache
