@@ -1,52 +1,46 @@
 from datasnap import datasnap
+from pprint import pprint
 import time
 from tqdm import tqdm
 import logging
-root = "/Volumes/AMBER_186F4"
+
 root = "/Users/amberserver/Downloads"
 
+class LogProgress(logging.Handler):
+    def __init__(self):
+        self.pbar = None
+        super(LogProgress, self).__init__()
 
-class TqdmHandler(logging.Handler):
-    pbar = None
-
-    def progress(self, total):
+    def _prog_gen(self, total):
+        count = 0
         with tqdm(total=total, bar_format=None) as pbar:
-            for i in range(total):
-                pbar.update((yield))
+            while count < total:
+                value = yield
+                count += value
+                pbar.update(value)
         yield
-        
+    
     def emit(self, record):
-        if record.getMessage() == 'Shallow total':
-            self.pbar = self.progress(record.total)
+        if record.getMessage() == self._total_log:
+            print("\n" + self.message)
+            self.pbar = self._prog_gen(record.total)
             self.pbar.send(None)
-        if record.getMessage() == 'Shallow progress':
+        if record.getMessage() ==  self._update_log:
             self.pbar.send(record.update)
 
-class HashHandler(logging.Handler):
-    pbar = None
+class WalkLog(LogProgress):
+        _total_log = 'Shallow total'
+        _update_log = 'Shallow progress'
+        message = "Walking root directory..."
 
-    def progress(self, total):
-        processed = 0
-        with tqdm(total=total, bar_format=None) as pbar:
-            while processed < total:
-                new_bytes = (yield)
-                processed += new_bytes
-                pbar.update(new_bytes)
-        yield
+class HashLog(LogProgress):
+        _total_log = 'Hash total'
+        _update_log = 'Hash progress'
+        message = "Hashing root directory..."
 
-    def emit(self, record):
-        if record.getMessage() == 'Hash total':
-            print("Starting Hashes...")
-            self.pbar = self.progress(record.total)
-            self.pbar.send(None)
-        if record.getMessage() == 'Hash progress':
-            self.pbar.send(record.update)
             
 
-logging.basicConfig(
-    level=logging.INFO,
-    handlers=[TqdmHandler(), HashHandler()]
-)
-
-
-files, dirs = datasnap(root, get_hashes=True)
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(WalkLog())
+logger.addHandler(HashLog())
