@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
         name='datasnap',
@@ -7,5 +7,5 @@ setup(
         author='Neil Hansen',
         package_dir={'datasnap': 'datasnap'},
         author_email='neil@amber.film',
-        packages=['datasnap'],
+        packages=find_packages(),
     )
