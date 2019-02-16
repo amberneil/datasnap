@@ -31,7 +31,7 @@ def datasnap(root_folder, hash=False, scan_timeout=5):
                 
         for file_name in files:
             full_path = os.path.join(path, file_name)
-            buffer.append((full_path, get_stats(full_path), False))
+            buffer.append((file_name, get_stats(full_path), False))
 
     if hash:
         hash_callback = _hash_progress_generator(buffer)
