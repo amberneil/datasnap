@@ -1,4 +1,6 @@
 # datasnap
+[![CircleCI](https://circleci.com/gh/amberneil/datasnap/tree/master.svg?style=shield)](https://circleci.com/gh/amberneil/datasnap/tree/master)
+
 Quickly snapshot a directory to extract stat metadata, checksums, and folder structure.
 
 Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks, and 'exists' to identify whether Python feels the file exists.
