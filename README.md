@@ -8,47 +8,20 @@ Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks,
 
 ```
 >>> from datasnap import datasnap
+>>> from pprint import pprint
 
 >>> root = '/Users/amberneil/Desktop/B001'
 
->>> dirs, files = datasnap(root)
+>>> for name, parent, stats in datasnap(root):
+>>>     print((name, parent))
 
->>> dirs
-{
-    '/Users/amberneil/Desktop/B001/MISC': {
-        'exists': True,
-        'realpath': '/Users/amberneil/Desktop/B001/MISC',
-        'parent': '/Users/amberneil/Desktop/B001',
-        'n_fields': 22,
-        'n_sequence_fields': 10,
-        'n_unnamed_fields': 3,
-        'st_atime': 1548117757.2528446,
-        'st_atime_ns': 1548117757252844520,
-        'st_birthtime': 1537378808.0,
-        'st_blksize': 4194304,
-        'st_blocks': 0,
-        'st_ctime': 1538166838.6238775,
-        'st_ctime_ns': 1538166838623877549,
-        'st_dev': 16777220,
-        'st_flags': 0,
-        'st_gen': 0,
-        'st_gid': 20,
-        'st_ino': 2556235,
-        'st_mode': 16895,
-        'st_mtime': 1537378808.0,
-        'st_mtime_ns': 1537378808000000000,
-        'st_nlink': 2,
-        'st_rdev': 0,
-        'st_size': 64,
-        'st_uid': 501
-    },
-    '/Users/amberneil/Desktop/B001/DCIM': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D': { ... }
-}
+('.DS_Store', '/Users/amberneil/Desktop/B001')
 
->>> files
-{
-    '/Users/amberneil/Desktop/B001/.DS_Store': {
+>>>     pprint(stats)
+
+{       
+        'islink': False,
+        'isdir': False,
         'exists': True,
         'realpath': '/Users/amberneil/Desktop/B001/.DS_Store',
         'n_fields': 22,
@@ -74,18 +47,5 @@ Mainly just uses os.stat, but adds in fields 'realpath', which follows symlinks,
         'st_size': 6148,
         'st_uid': 50
     }
-    '/Users/amberneil/Desktop/B001/DCIM/.DS_Store': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1083.MOV': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1084.MOV': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1086.MOV': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1079.JPG': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1078.JPG': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1077.THM': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1078.CR2': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/_MG_1079.CR2': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1083.THM': { ... },
-    '/Users/amberneil/Desktop/B001/DCIM/100EOS7D/MVI_1082.THM': { ... }   
-
-}
 
 ```
